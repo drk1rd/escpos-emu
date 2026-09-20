@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>escpos-emu</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <div class="app">
+      <!-- toolbar ------------------------------------------------------ -->
+      <header class="toolbar">
+        <span class="product">escpos-emu</span>
+
+        <div class="field">
+          <input
+            id="q"
+            type="text"
+            spellcheck="false"
+            autocomplete="off"
+            placeholder="Filter printed text"
+          />
+          <button class="icon-btn" id="q-clear" type="button" title="Clear filter" hidden>&times;</button>
+        </div>
+
+        <label class="toggle">
+          <input type="checkbox" id="dupes-only" />
+          <span>Duplicates only</span>
+        </label>
+
+        <label class="toggle">
+          <input type="checkbox" id="follow" checked />
+          <span>Follow</span>
+        </label>
+
+        <div class="spacer"></div>
+
+        <button class="btn" id="export" type="button">Export</button>
+        <button class="btn" id="clear-all" type="button">Clear log</button>
+      </header>
+
+      <!-- devices ------------------------------------------------------ -->
+      <aside class="rail" id="rail">
+        <div class="rail-head">
+          <span>Devices</span>
+          <span class="count" id="device-count"></span>
+        </div>
+        <ul class="device-list" id="device-list"></ul>
+      </aside>
+
+      <!-- job table ---------------------------------------------------- -->
+      <section class="list">
+        <table class="grid" id="grid">
+          <thead>
+            <tr>
+              <th class="col-seq">#</th>
+              <th class="col-time">Time</th>
+              <th class="col-device">Device</th>
+              <th class="col-num">Bytes</th>
+              <th class="col-num">Lines</th>
+              <th class="col-flags">Flags</th>
+              <th class="col-preview">Preview</th>
+            </tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+        <p class="placeholder" id="list-empty">No jobs recorded.</p>
+      </section>
+
+      <!-- detail ------------------------------------------------------- -->
+      <section class="detail" id="detail">
+        <div class="detail-head">
+          <div class="detail-title" id="detail-title">No job selected</div>
+          <nav class="tabs" id="tabs">
+            <button class="tab is-active" data-tab="paper" type="button">Paper</button>
+            <button class="tab" data-tab="text" type="button">Text</button>
+            <button class="tab" data-tab="hex" type="button">Bytes</button>
+            <button class="tab" data-tab="events" type="button">Commands</button>
+            <span class="tab-sep"></span>
+            <button class="btn ghost" id="copy" type="button" title="Copy this view to the clipboard" disabled>
+              Copy
+            </button>
+          </nav>
+        </div>
+        <div class="detail-body">
+          <div class="pane" id="pane-paper">
+          <p class="placeholder" id="detail-empty">
+            Select a job to see what the printer received.<br />
+            <span class="muted">&uarr;&darr; or j/k to move &middot; 1&ndash;4 for tabs &middot; / to filter</span>
+          </p>
+        </div>
+          <pre class="pane code" id="pane-text" hidden></pre>
+          <pre class="pane code hex" id="pane-hex" hidden></pre>
+          <div class="pane" id="pane-events" hidden></div>
+        </div>
+      </section>
+
+      <!-- status ------------------------------------------------------- -->
+      <footer class="status">
+        <span id="status-conn" class="conn">connecting</span>
+        <span class="sep"></span>
+        <span id="status-counts"></span>
+        <div class="spacer"></div>
+        <span id="status-hint" class="muted">&uarr;&darr;/jk move &middot; g/G ends &middot; 1&ndash;4 tabs &middot; / filter</span>
+      </footer>
+    </div>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
