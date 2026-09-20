@@ -1,0 +1,42 @@
+{
+  "name": "escpos-emu",
+  "version": "0.1.0",
+  "description": "A multi-IP ESC/POS thermal printer emulator with a live paper feed, searchable history and failure injection. Test receipt printing without hardware.",
+  "keywords": [
+    "escpos",
+    "esc-pos",
+    "thermal-printer",
+    "receipt-printer",
+    "printer",
+    "printer-emulator",
+    "emulator",
+    "test-double",
+    "tcp",
+    "testing"
+  ],
+  "license": "MIT",
+  "author": "Suryansh Prajapati",
+  "type": "commonjs",
+  "main": "src/index.js",
+  "bin": {
+    "escpos-emu": "bin/escpos-emu.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "files": [
+    "bin",
+    "src",
+    "ui",
+    "devices.example.json",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "start": "node bin/escpos-emu.js",
+    "test": "node --test \"tests/**/*.test.js\"",
+    "lint": "node --check src/index.js"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

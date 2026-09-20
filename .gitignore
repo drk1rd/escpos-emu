@@ -1,0 +1,7 @@
+node_modules/
+data/
+*.log
+.DS_Store
+
+# Your own printers, if you keep a config here rather than passing --config.
+devices.local.json
