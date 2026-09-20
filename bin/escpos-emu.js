@@ -8,10 +8,9 @@ const { createEmulator } = require('../src/server');
 /**
  * What to emulate when nothing has been configured.
  *
- * `npx github:drk1rd/escpos-emu` should print something within seconds of a
- * first try, and
- * requiring a config file before it will start makes the first try fail - with
- * advice to copy a file that is buried inside node_modules, at that.
+ * A first try should print something within seconds. Requiring a config file
+ * before the tool will start makes that first try fail instead - with advice to
+ * copy a file buried inside node_modules, at that.
  *
  * Loopback, because it is the only thing guaranteed to be bindable on a machine
  * we know nothing about. Port 9100 is the one every ESC/POS client already
