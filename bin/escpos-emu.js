@@ -5,13 +5,35 @@ const fs = require('fs');
 const path = require('path');
 const { createEmulator } = require('../src/server');
 
+/**
+ * What to emulate when nothing has been configured.
+ *
+ * `npx escpos-emu` should print something within seconds of a first try, and
+ * requiring a config file before it will start makes the first try fail - with
+ * advice to copy a file that is buried inside node_modules, at that.
+ *
+ * Loopback, because it is the only thing guaranteed to be bindable on a machine
+ * we know nothing about. Port 9100 is the one every ESC/POS client already
+ * defaults to, so the first device needs no configuring on the sending side
+ * either.
+ */
+const BUILT_IN = {
+  subnet: null,
+  devices: [
+    { id: 'kitchen', name: 'KITCHEN', ip: '127.0.0.1', port: 9100, columns: 48 },
+    { id: 'bar', name: 'BAR', ip: '127.0.0.1', port: 9101, columns: 48 },
+    { id: 'counter', name: 'COUNTER', ip: '127.0.0.1', port: 9102, columns: 32 },
+  ],
+};
+
 const USAGE = `
 escpos-emu — a multi-IP ESC/POS printer emulator
 
   escpos-emu [options]
 
 Options
-  -c, --config <file>         device configuration (default: ./devices.json)
+  -c, --config <file>         device configuration (default: ./devices.json if
+                              present, otherwise three printers on 127.0.0.1)
   -p, --port <n>              HTTP port for the UI and API (default: 7070)
   -H, --host <addr>           HTTP bind address (default: 0.0.0.0)
   -d, --data <dir>            where to keep the job log (default: ./data)
@@ -49,28 +71,34 @@ async function main() {
   }
 
   const configPath = path.resolve(args.config || 'devices.json');
-  if (!fs.existsSync(configPath)) {
-    process.stderr.write(
-      `escpos-emu: no config at ${configPath}\n` +
-        `Copy devices.example.json to devices.json, or pass --config.\n`
-    );
+  const haveFile = fs.existsSync(configPath);
+
+  // A config asked for by name and not found is a mistake worth stopping on.
+  // One merely not present is the first-run case, and gets the built-in.
+  if (args.config && !haveFile) {
+    process.stderr.write(`escpos-emu: no config at ${configPath}\n`);
     process.exitCode = 1;
     return;
   }
 
-  let config;
-  try {
-    config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
-  } catch (err) {
-    process.stderr.write(`escpos-emu: ${configPath} is not valid JSON — ${err.message}\n`);
-    process.exitCode = 1;
-    return;
-  }
+  let config = BUILT_IN;
+  let source = 'built-in default';
 
-  if (!Array.isArray(config.devices) || config.devices.length === 0) {
-    process.stderr.write(`escpos-emu: ${configPath} lists no devices.\n`);
-    process.exitCode = 1;
-    return;
+  if (haveFile) {
+    try {
+      config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+    } catch (err) {
+      process.stderr.write(`escpos-emu: ${configPath} is not valid JSON — ${err.message}\n`);
+      process.exitCode = 1;
+      return;
+    }
+    source = configPath;
+
+    if (!Array.isArray(config.devices) || config.devices.length === 0) {
+      process.stderr.write(`escpos-emu: ${configPath} lists no devices.\n`);
+      process.exitCode = 1;
+      return;
+    }
   }
 
   const dataDir = args.noData
@@ -101,7 +129,14 @@ async function main() {
     );
   }
   process.stdout.write(`\n  paper feed   ${info.url}\n`);
-  process.stdout.write(`  job log      ${dataDir || '(memory only)'}\n\n`);
+  process.stdout.write(`  job log      ${dataDir || '(memory only)'}\n`);
+  process.stdout.write(`  config       ${source}\n\n`);
+  if (source === 'built-in default') {
+    process.stdout.write(
+      `  Copy a starting point to customise:\n` +
+      `    cp ${path.join(__dirname, '..', 'devices.example.json')} devices.json\n\n`
+    );
+  }
 
   const shutdown = async (signal) => {
     process.stdout.write(`\nescpos-emu: ${signal}, stopping\n`);
