@@ -132,7 +132,20 @@ class Device extends EventEmitter {
 
     if (this.mode === 'reset') {
       this.emit('refused', { deviceId: this.id, reason: 'reset', at: startedAt });
-      socket.destroy();
+      /*
+        Send an RST, not a polite FIN.
+
+        `destroy()` closes the socket, and whether the kernel then sends a reset
+        or an ordinary shutdown depends on whether anything was still unread -
+        so the client saw ECONNRESET on one platform and a clean close on
+        another, for the same code. Firmware that drops a job resets the
+        connection, and `resetAndDestroy` is how to say that on purpose.
+
+        Added in Node 18.3; on anything older this falls back to the old
+        behaviour rather than throwing.
+      */
+      if (typeof socket.resetAndDestroy === 'function') socket.resetAndDestroy();
+      else socket.destroy();
       return;
     }
 
