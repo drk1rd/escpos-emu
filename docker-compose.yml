@@ -1,0 +1,36 @@
+# Four emulated printers on their own addresses, behind one UI.
+#
+#   docker compose up --build
+#   open http://localhost:7070
+#
+# The bridge below claims 192.168.10.0/24. If THIS MACHINE is already on that
+# network, do not use this file as it stands: Docker will route that subnet into
+# the container and you will lose the real devices on it. Change the subnet and
+# the device IPs together, in devices.json and here.
+services:
+  escpos-emu:
+    build: .
+    container_name: escpos-emu
+    # Needed to add the other three printer addresses to the container; see
+    # docker-entrypoint.sh.
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - "7070:7070"
+    volumes:
+      - ./devices.json:/app/devices.json:ro
+      - escpos-data:/app/data
+    networks:
+      printers:
+        ipv4_address: 192.168.10.101
+    restart: unless-stopped
+
+volumes:
+  escpos-data:
+
+networks:
+  printers:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.10.0/24
