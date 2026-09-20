@@ -1,6 +1,6 @@
 {
   "name": "escpos-emu",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A multi-IP ESC/POS thermal printer emulator with a live paper feed, searchable history and failure injection. Test receipt printing without hardware.",
   "keywords": [
     "escpos",
