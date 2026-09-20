@@ -21,21 +21,7 @@ hardware.
 troubleshooting) · [ESC/POS coverage](docs/COMMANDS.md) (what is modelled, and
 how to add a command)
 
-```
-escpos-emu   [ Filter printed text ]  ☐ Duplicates only  ☑ Follow   Export  Clear log
-┌────────────┬──────────────────────────────────────────────────────────────────────┐
-│ DEVICES  3 │  #   TIME           DEVICE    BYTES  LINES  FLAGS      PREVIEW        │
-│ All      5 │  1   15:03:11.467   kitchen     318     11             KITCHEN        │
-│ ● KITCHEN  │  2   15:03:11.873   kitchen     318     11  [DUP]      KITCHEN        │
-│   :9100    │  3   15:03:12.176   counter     714     16  [DRW][BC]  THE EXAMPLE CA │
-│ ● BAR      │  4   15:03:12.179   till         83      3  [WIDE]     TILL 2 reprint │
-│   :9100    │  5   15:05:33.718   kitchen      43      3             LIVE           │
-├────────────┴──────────────────────────────────────────────────────────────────────┤
-│ KITCHEN · 15:03:11.873 · 318 bytes · 11 lines · CP437 · repeat of #1               │
-│   Paper │ Text │ Bytes │ Commands                                                  │
-└───────────────────────────────────────────────────────────────────────────────────┘
- ● connected │ 5 jobs · 1.4 kB · 1 duplicate        ↑↓/jk move · g/G ends · 1–4 tabs · / filter
-```
+![The escpos-emu inspector: a device rail, a job table with DUP and WIDE flags, and a rendered receipt](docs/img/inspector.png)
 
 Every job is a row. `DUP` is the same ticket printed twice, `WIDE` is a line
 that does not fit the roll, `?CMD` is a command this build does not model.
