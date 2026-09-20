@@ -1,0 +1,10 @@
+{
+  "subnet": null,
+  "httpPort": 7070,
+  "dataDir": "./data",
+  "devices": [
+    { "id": "kitchen",  "name": "KITCHEN",  "ip": "127.0.0.1", "port": 9101, "columns": 48 },
+    { "id": "bar",      "name": "BAR",      "ip": "127.0.0.1", "port": 9102, "columns": 48 },
+    { "id": "till",     "name": "TILL",     "ip": "127.0.0.1", "port": 9103, "columns": 32 }
+  ]
+}
