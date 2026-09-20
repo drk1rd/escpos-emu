@@ -16,6 +16,14 @@
   ],
   "license": "MIT",
   "author": "Suryansh Prajapati",
+  "homepage": "https://github.com/drk1rd/escpos-emu#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/drk1rd/escpos-emu.git"
+  },
+  "bugs": {
+    "url": "https://github.com/drk1rd/escpos-emu/issues"
+  },
   "type": "commonjs",
   "main": "src/index.js",
   "bin": {

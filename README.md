@@ -1,5 +1,9 @@
 # escpos-emu
 
+[![node](https://img.shields.io/badge/node-%E2%89%A518-brightgreen.svg)](https://nodejs.org)
+[![dependencies](https://img.shields.io/badge/dependencies-none-brightgreen.svg)](package.json)
+[![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 A multi-IP ESC/POS thermal printer emulator with a live paper feed, searchable
 history and failure injection. Test receipt and kitchen-ticket printing without
 hardware.
@@ -80,7 +84,7 @@ npx escpos-emu --config devices.json
 ## Quickstart
 
 ```bash
-git clone https://github.com/you/escpos-emu && cd escpos-emu
+git clone https://github.com/drk1rd/escpos-emu && cd escpos-emu
 
 # Three printers on 127.0.0.1, no setup needed
 npx escpos-emu --config devices.loopback.json

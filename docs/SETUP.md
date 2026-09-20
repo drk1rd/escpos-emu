@@ -23,7 +23,7 @@ modules and no build step.
 
 ```bash
 node --version   # v18.0.0 or later
-git clone https://github.com/you/escpos-emu && cd escpos-emu
+git clone https://github.com/drk1rd/escpos-emu && cd escpos-emu
 ```
 
 There is nothing to `npm install`. You can run it immediately.
