@@ -31,4 +31,8 @@ jobs:
         run: node --check src/index.js
 
       - name: Test
-        run: node --test "tests/**/*.test.js"
+        # `node --test` with no arguments discovers test files itself, which
+        # has worked since Node 18. Glob PATTERNS are only understood from Node
+        # 21, so spelling one here passed locally and failed on 18 and 20 - as
+        # this matrix found the first time it ran.
+        run: npm test
