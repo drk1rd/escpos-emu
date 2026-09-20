@@ -36,7 +36,7 @@ Three printers on `127.0.0.1`, no permissions, no network changes, and no
 configuration at all — this is what `escpos-emu` does when it finds none:
 
 ```bash
-npx escpos-emu
+npx github:drk1rd/escpos-emu
 ```
 
 ```
@@ -91,7 +91,7 @@ sudo ifconfig lo0 alias 192.168.10.102
 sudo ifconfig lo0 alias 192.168.10.103
 sudo ifconfig lo0 alias 192.168.10.104
 
-# Then: npx escpos-emu --config devices.json
+# Then: npx github:drk1rd/escpos-emu --config devices.json
 ```
 
 Paste them, start the emulator, and take them down when you are finished:
@@ -314,7 +314,7 @@ interface:
 ```yaml
 - name: Start printer emulator
   run: |
-    npx escpos-emu --config devices.loopback.json --no-data --host 127.0.0.1 &
+    npx github:drk1rd/escpos-emu --config devices.loopback.json --no-data --host 127.0.0.1 &
     npx wait-on tcp:7070
 - run: npm test
 ```

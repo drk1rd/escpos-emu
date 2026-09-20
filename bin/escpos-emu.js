@@ -8,7 +8,8 @@ const { createEmulator } = require('../src/server');
 /**
  * What to emulate when nothing has been configured.
  *
- * `npx escpos-emu` should print something within seconds of a first try, and
+ * `npx github:drk1rd/escpos-emu` should print something within seconds of a
+ * first try, and
  * requiring a config file before it will start makes the first try fail - with
  * advice to copy a file that is buried inside node_modules, at that.
  *

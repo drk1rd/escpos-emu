@@ -73,15 +73,28 @@ docker run --rm -p 7070:7070 -p 9100-9103:9100-9103 ghcr.io/drk1rd/escpos-emu
 Four printers, one per published port. Open <http://localhost:7070> and point
 your application at `localhost:9100`.
 
-**Node** — no configuration needed for a first run:
+**Node** — straight from the repository, no configuration needed:
 
 ```bash
-npx escpos-emu
+npx github:drk1rd/escpos-emu
 ```
 
-Three printers on `127.0.0.1:9100`, `:9101` and `:9102`. Add it to a project
-with `npm install --save-dev escpos-emu`, and pass `--config` once you want
+Three printers on `127.0.0.1:9100`, `:9101` and `:9102`. Pin a version with
+`npx github:drk1rd/escpos-emu#v0.1.2`, and pass `--config` once you want
 printers on their own addresses.
+
+As a project dependency:
+
+```json
+"devDependencies": {
+  "escpos-emu": "github:drk1rd/escpos-emu#v0.1.2"
+}
+```
+
+> Not on the npm registry. npm publishes the maintainer's email address in every
+> package's public metadata — `maintainers[].email` and `_npmUser.email` — and
+> there is no setting that hides it. Docker and git installs carry the same
+> code without that.
 
 ## Quickstart
 
@@ -89,7 +102,7 @@ printers on their own addresses.
 git clone https://github.com/drk1rd/escpos-emu && cd escpos-emu
 
 # Three printers on 127.0.0.1, no setup needed
-npx escpos-emu
+npx github:drk1rd/escpos-emu
 
 # In another shell — send some paper to look at
 node examples/send-demo.js
@@ -114,7 +127,7 @@ docker compose up --build
 
 ```bash
 ./scripts/aliases.sh up devices.json   # prints the commands; read them, then run them
-npx escpos-emu --config devices.json
+npx github:drk1rd/escpos-emu --config devices.json
 ./scripts/aliases.sh down devices.json # when you are done
 ```
 

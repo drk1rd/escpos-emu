@@ -51,4 +51,4 @@ while read -r ip; do
   fi
 done <<< "$ips"
 echo
-echo "# Then: npx escpos-emu --config $config"
+echo "# Then: npx github:drk1rd/escpos-emu --config $config"
