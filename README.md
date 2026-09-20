@@ -16,12 +16,15 @@ hardware.
 - **Failure injection at runtime** — make a printer hang, refuse, or run out of
   paper while your stack is running.
 - **Zero runtime dependencies.** Node 18+, clone and go.
+- **Your application can be in any language.** Printers are raw TCP and the
+  control API is HTTP — Node is what the emulator is written in, not what you
+  have to test from.
 
 **Documentation** — [Setup](docs/SETUP.md) (IP addresses, Docker, CI,
 troubleshooting) · [ESC/POS coverage](docs/COMMANDS.md) (what is modelled, and
 how to add a command)
 
-![The escpos-emu inspector: a device rail, a job table with DUP and WIDE flags, and a rendered receipt](docs/img/inspector.png)
+![A ticket arrives; the same round printed again is flagged as a repeat; the printer is switched to hang and the next job is never recorded](docs/img/demo.gif)
 
 Every job is a row. `DUP` is the same ticket printed twice, `WIDE` is a line
 that does not fit the roll, `?CMD` is a command this build does not model.
@@ -193,6 +196,38 @@ test('a ticket that fails to print is not reported as sent', async () => {
 | `expectExactlyOne(text, { device })` | throws, listing every match and its time |
 | `setMode(device, mode)` / `setPaper(device, sheets)` | failure injection |
 | `reset(device?)` | clear the log |
+
+### From another language
+
+The emulator is a daemon, not a library. Printers are raw TCP on port 9100 and
+the control API is HTTP with JSON, so the client above is a convenience for Node
+suites rather than a requirement. From Python, for instance:
+
+```python
+import requests
+
+EMU = "http://localhost:7070"
+
+def reset():
+    requests.post(f"{EMU}/api/reset").raise_for_status()
+
+def jobs(text=None, device=None):
+    path = f"/api/devices/{device}/jobs" if device else "/api/jobs"
+    r = requests.get(EMU + path, params={"q": text} if text else None)
+    return r.json()["jobs"]
+
+def set_mode(device, mode):          # accept | reset | hang | refuse
+    requests.post(f"{EMU}/api/devices/{device}/mode", json={"mode": mode})
+
+def test_round_reaches_the_kitchen_once():
+    reset()
+    place_order(table="B4", items=["CAPPUCCINO x3"])
+    matches = jobs("3 x CAPPUCCINO", device="kitchen")
+    assert len(matches) == 1, [j["at"] for j in matches]
+```
+
+Printing is asynchronous, so poll rather than reading immediately — that is all
+`waitForJob` does.
 
 ### Duplicate detection
 
