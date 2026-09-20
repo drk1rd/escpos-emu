@@ -1,0 +1,34 @@
+name: test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    # The emulator binds TCP listeners and drives them over real sockets, so it
+    # is worth proving on every platform someone might develop on rather than
+    # only on Linux.
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        node: ['18', '20', '22']
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+
+      # No install step: this package has no dependencies, and a CI run that
+      # never resolves one is a CI run that proves that claim.
+      - name: Check every source file parses
+        run: node --check src/index.js
+
+      - name: Test
+        run: node --test "tests/**/*.test.js"
