@@ -64,10 +64,21 @@ await emu.expectExactlyOne('3 x CAPPUCCINO', { device: 'kitchen' });
 
 ## Install
 
+**Docker** — nothing to install, and nothing needs Node:
+
+```bash
+docker run --rm -p 7070:7070 -p 9100-9103:9100-9103 ghcr.io/drk1rd/escpos-emu
+```
+
+Four printers, one per published port. Open <http://localhost:7070> and point
+your application at `localhost:9100`.
+
+**Node**:
+
 ```bash
 npm install --save-dev escpos-emu
 # or run it straight from the repo
-npx escpos-emu --config devices.json
+npx escpos-emu --config devices.loopback.json
 ```
 
 ## Quickstart

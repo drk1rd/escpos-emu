@@ -1,0 +1,12 @@
+{
+  "subnet": null,
+  "httpPort": 7070,
+  "dataDir": "./data",
+  "duplicateWindowMs": 300000,
+  "devices": [
+    { "id": "kitchen", "name": "KITCHEN", "ip": "0.0.0.0", "port": 9100, "columns": 48, "page": "CP437", "mode": "accept" },
+    { "id": "grill",   "name": "GRILL",   "ip": "0.0.0.0", "port": 9101, "columns": 48, "page": "CP437", "mode": "accept" },
+    { "id": "bar",     "name": "BAR",     "ip": "0.0.0.0", "port": 9102, "columns": 48, "page": "CP437", "mode": "accept" },
+    { "id": "counter", "name": "COUNTER", "ip": "0.0.0.0", "port": 9103, "columns": 32, "page": "CP437", "mode": "accept" }
+  ]
+}

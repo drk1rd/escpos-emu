@@ -26,6 +26,10 @@ if [ -f "$CONFIG" ]; then
     for (const d of cfg.devices || []) if (d.ip) console.log(d.ip);
   ' "$CONFIG" | while read -r ip; do
     [ -z "$ip" ] && continue
+    # A wildcard or loopback bind needs no address adding, and `ip addr add`
+    # would fail on it - which would look like an error when it is the normal
+    # single-container case.
+    case "$ip" in 0.0.0.0|127.0.0.1) continue ;; esac
     if ip addr add "$ip/$PREFIX" dev "$IFACE" 2>/dev/null; then
       echo "escpos-emu: bound $ip on $IFACE"
     else

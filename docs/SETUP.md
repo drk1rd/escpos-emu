@@ -124,6 +124,16 @@ host's networking:
 docker compose up --build
 ```
 
+To run the published image instead of building, with each printer on its own
+published port and no static addresses at all:
+
+```bash
+docker run --rm -p 7070:7070 -p 9100-9103:9100-9103 ghcr.io/drk1rd/escpos-emu
+```
+
+That is the quickest way in, and it needs no Node on the host. Use the compose
+file when you want the printers on their own addresses.
+
 One container holds all four addresses. Compose can only assign a container one
 address per network, so `docker-entrypoint.sh` reads `devices.json` and adds the
 rest with `ip addr add` — which is why the service is granted `NET_ADMIN`.
