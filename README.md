@@ -73,13 +73,15 @@ docker run --rm -p 7070:7070 -p 9100-9103:9100-9103 ghcr.io/drk1rd/escpos-emu
 Four printers, one per published port. Open <http://localhost:7070> and point
 your application at `localhost:9100`.
 
-**Node**:
+**Node** — no configuration needed for a first run:
 
 ```bash
-npm install --save-dev escpos-emu
-# or run it straight from the repo
-npx escpos-emu --config devices.loopback.json
+npx escpos-emu
 ```
+
+Three printers on `127.0.0.1:9100`, `:9101` and `:9102`. Add it to a project
+with `npm install --save-dev escpos-emu`, and pass `--config` once you want
+printers on their own addresses.
 
 ## Quickstart
 
@@ -87,7 +89,7 @@ npx escpos-emu --config devices.loopback.json
 git clone https://github.com/drk1rd/escpos-emu && cd escpos-emu
 
 # Three printers on 127.0.0.1, no setup needed
-npx escpos-emu --config devices.loopback.json
+npx escpos-emu
 
 # In another shell — send some paper to look at
 node examples/send-demo.js

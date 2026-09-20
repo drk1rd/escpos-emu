@@ -32,21 +32,23 @@ There is nothing to `npm install`. You can run it immediately.
 
 ## Fastest: loopback ports
 
-Three printers on `127.0.0.1`, no permissions, no network changes:
+Three printers on `127.0.0.1`, no permissions, no network changes, and no
+configuration at all — this is what `escpos-emu` does when it finds none:
 
 ```bash
-npx escpos-emu --config devices.loopback.json
+npx escpos-emu
 ```
 
 ```
 escpos-emu
 
-  KITCHEN  127.0.0.1:9101  48 col  accept
-  BAR      127.0.0.1:9102  48 col  accept
-  TILL     127.0.0.1:9103  32 col  accept
+  KITCHEN  127.0.0.1:9100  48 col  accept
+  BAR      127.0.0.1:9101  48 col  accept
+  COUNTER  127.0.0.1:9102  32 col  accept
 
   paper feed   http://localhost:7070
   job log      ./data
+  config       built-in default
 ```
 
 Open <http://localhost:7070>, then send it something:
