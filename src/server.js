@@ -285,7 +285,24 @@ function createEmulator(config = {}) {
         server.listen(httpPort, httpHost, resolve);
       });
 
-      return { url: `http://localhost:${server.address().port}` };
+      /*
+        Report the address it is actually reachable on.
+
+        This said `localhost` regardless of what it bound. When a test binds
+        127.0.0.1 and then fetches `localhost`, the name has to be resolved -
+        and on Node 18 it resolves to ::1 first, where nothing is listening, so
+        every request failed with "fetch failed". Only a wildcard bind has no
+        single address worth naming, and there `localhost` is honest.
+      */
+      const addr = server.address();
+      const wildcard = addr.address === '0.0.0.0' || addr.address === '::';
+      const host = wildcard
+        ? 'localhost'
+        : addr.family === 'IPv6'
+          ? `[${addr.address}]`
+          : addr.address;
+
+      return { url: `http://${host}:${addr.port}` };
     },
 
     async stop() {
